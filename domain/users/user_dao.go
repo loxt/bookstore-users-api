@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"github.com/loxt/bookstore-users-api/datasources/mysql/users_db"
 	"github.com/loxt/bookstore-users-api/utils/date_utils"
 	"github.com/loxt/bookstore-users-api/utils/errors"
 )
@@ -11,6 +12,9 @@ var (
 )
 
 func (user *User) Get() *errors.RestErr {
+	if err := users_db.Client.Ping(); err != nil {
+		panic(err)
+	}
 	result := usersDB[user.ID]
 
 	if result == nil {
