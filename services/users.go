@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/loxt/bookstore-users-api/domain/users"
+	"github.com/loxt/bookstore-users-api/utils/date_utils"
 	"github.com/loxt/bookstore-users-api/utils/errors"
 )
 
@@ -21,6 +22,9 @@ func CreateUser(user users.User) (*users.User, *errors.RestErr) {
 	if err := user.Validate(); err != nil {
 		return nil, err
 	}
+
+	user.Status = users.StatusActive
+	user.DateCreated = date_utils.GetNowDBFormat()
 
 	if err := user.Save(); err != nil {
 		return nil, err
@@ -67,4 +71,10 @@ func UpdateUser(isPartial bool, user users.User) (*users.User, *errors.RestErr) 
 	}
 
 	return current, nil
+}
+
+func Search(status string) ([]users.User, *errors.RestErr) {
+	dao := &users.User{}
+
+	return dao.Search(status)
 }

@@ -10,6 +10,8 @@ func mapUrls() {
 
 	router.POST("/users", users_controller.Create)
 
+	router.GET("/internal/users/search", users_controller.Search)
+
 	userGroup := router.Group("/users/:user_id")
 	userGroup.GET("/", users_controller.Read)
 	userGroup.PUT("/", users_controller.Update)
