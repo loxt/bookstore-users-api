@@ -9,6 +9,7 @@ func mapUrls() {
 	router.GET("/ping", ping_controller.Ping)
 
 	router.POST("/users", users_controller.Create)
+	router.POST("/users/login", users_controller.Login)
 
 	router.GET("/internal/users/search", users_controller.Search)
 
