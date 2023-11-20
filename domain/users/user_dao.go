@@ -15,7 +15,7 @@ const (
 	queryUpdateUser             = "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?;"
 	queryDeleteUser             = "DELETE FROM users WHERE id=?;"
 	queryFindByStatus           = "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE status=?;"
-	queryFindByEmailAndPassword = "SELECT id, first_name, last_name, email, date_created, status FROM users where email = ? AND password = ?;"
+	queryFindByEmailAndPassword = "SELECT id, first_name, last_name, email, date_created, status FROM users where email = ? AND password = ? AND status = ?;"
 )
 
 func (user *User) Get() *errors.RestErr {
@@ -152,7 +152,7 @@ func (user *User) FindByEmailAndPassword() *errors.RestErr {
 
 	defer stmt.Close()
 
-	result := stmt.QueryRow(user.Email, user.Password)
+	result := stmt.QueryRow(user.Email, user.Password, StatusActive)
 
 	if err := result.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Status, &user.DateCreated); err != nil {
 		if strings.Contains(err.Error(), mysql_utils.ErrorNoRows) {
